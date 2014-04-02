@@ -22,7 +22,7 @@ Compilation
 This project has been tested and confirmed to compile with g++. Compiling should be possible with simple 
 commands such as:
 
-> g++ -c ircbot.cpp ircbot.h
+`g++ -c ircbot.cpp ircbot.h`
 
 Since this project is only intended to be a library, there is no main method in the code. Users must write 
 their own main method. More information is included in the "Getting Started" section.
@@ -32,7 +32,7 @@ Getting Started
 This library is intended to be easy and simple to use. All a user has to do is include the header file in 
 their main program:
 
-> #include ircbot.h
+`#include ircbot.h`
 
 And then they are ready to go.
 
