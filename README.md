@@ -44,7 +44,15 @@ The following is an example of how to make a IRC bot and have it join a room:
     
     int main() {
         IrcBot bot = IrcBot("NewBot", "New Bot");
-        bot.start("irc.freenode.net", "6667", "#room");
+        bot.start("irc.freenode.net", "6667");
+        
+        bot.joinRoom("#roomName");
+        
+        while (bot.isConnected()) {
+            bot.recieveData();
+            
+            /* Handle Data Here! */
+        }
         
         return 0;
     }

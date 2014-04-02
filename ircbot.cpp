@@ -31,6 +31,13 @@ using namespace std;
  */
 IrcBot::IrcBot(char * _nick, char * _usr) {
 
+  // Allocate space for recieve buffer
+  recv_buffer = (char*) malloc(MAXDATASIZE);
+
+  // Bot isn't connected to a server yet
+  connected = false;
+  auth = false;
+
   // Store Nickname and Username
   nick = (char*) calloc(strlen(_nick) + 1, sizeof(char));
   usr  = (char*) calloc(strlen(_usr)  + 1, sizeof(char));
@@ -55,17 +62,21 @@ IrcBot::IrcBot(char * _nick, char * _usr) {
  * IrcBot Destructor
  */
 IrcBot::~IrcBot() {
+
   close (s);
+
+  // Free all dynamically allocated memory
   free(nick_msg);
   free(usr_msg);
   free(nick);
   free(usr);
+  free(recv_buffer);
 }
 
 /*
- * Starts IrcBot
+ * Connects IRC bot to server
  */
-void IrcBot::start(char* host, char* port, char* chatroom) {
+void IrcBot::connectToServer(char* host, char* port) {
 
   struct addrinfo hints, *servinfo;
 
@@ -91,71 +102,20 @@ void IrcBot::start(char* host, char* port, char* chatroom) {
     close(s);
     perror("Client Connect");
   }
+  connected = true;
 
   // Free Memory
   freeaddrinfo(servinfo);
 
-  // Create buffer for recieving data
-  int numbytes;
-  char buf[MAXDATASIZE];
+  // Recieve three messages as mentioned in IRC protocol
+  int count;
+  for (count = 0; count < 3; count++)
+    recieveData();
 
-  // Create JOIN IRC message
-  char* join_msg = (char*) calloc(strlen(chatroom) + 7, sizeof(char));
-  strcpy(join_msg, "JOIN ");
-  strcat(join_msg, chatroom);
-  strcat(join_msg, "\r\n");
-
-  // String constants
-  char ping[] = "PING";
-
-  int count = 0;
-  while (1) {
-    count++;
-
-    switch (count) {
-      case 3:
-        // After 3 recives send data to server (as per IRC protocol)
-        sendData(nick_msg);
-        sendData(usr_msg);
-        break;
-      case 4:
-        // Join a channel after we connect
-        sendData(join_msg);
-        // No longer need join message
-        free(join_msg);
-        break;
-      default:
-        break;
-    }
-
-
-
-    // Recieve Data
-    numbytes = recv(s,buf,MAXDATASIZE-1,0);
-    buf[numbytes]='\0';
-    cout << buf;
-
-    // Pass buf to the message handler
-    msgHandler(buf);
-
-
-    // If Ping Recived
-    /*
-     * must reply to ping overwise connection will be closed
-     * see http://www.irchelp.org/irchelp/rfc/chapter4.html
-     */
-    if (charSearch(buf, ping)) {
-      sendPong(buf);
-    }
-
-    // Connection closed
-    if (numbytes == 0) {
-      cout << "-----CONNECTION CLOSED-----"<< endl;
-      cout << timeNow() << endl;
-
-      break;
-    }
-  }
+  // Send NICK and USER messages to IRC server
+  sendData(nick_msg);
+  sendData(usr_msg);
+  auth = true;
 }
 
 /*
@@ -190,13 +150,15 @@ bool IrcBot::charSearch(char* toSearch, char* searchFor) {
 /*
  * Confirms IrcBot is connected
  */
-bool IrcBot::isConnected(char *buf) {
-  // If we find /MOTD then its ok join a channel
-  char motd[] = "/MOTD";
-  if (charSearch(buf, motd) == true)
-    return true;
-  else
-    return false;
+bool IrcBot::isConnected() {
+  return connected;
+}
+
+/*
+ * Confirms IrcBot is authenticated
+ */
+bool IrcBot::isAuth() {
+  return auth;
 }
 
 /*
@@ -225,6 +187,7 @@ bool IrcBot::sendData(char *msg) {
   else
     return true;
 }
+
 
 /*
  * Send IRC pong to server (in response to ping)
@@ -274,6 +237,47 @@ void IrcBot::sendPong(char *buf) {
         return;
       }
     }
+  }
+}
+
+/*
+ * Recieves data from server and responds to ping if necessary
+ */
+void IrcBot::recieveData() {
+
+  int numbytes = recv(s, recv_buffer, MAXDATASIZE - 1, 0);
+  recv_buffer[numbytes] = '\0';
+  cout << recv_buffer;
+
+  // Check for ping
+  char ping[] = "PING";
+  if (charSearch(recv_buffer, ping))
+    sendPong(recv_buffer);
+
+  // Check for disconnect
+  if (numbytes == 0) {
+    cout << "-----CONNECTION CLOSED-----" << endl;
+    cout << timeNow() << endl;
+    auth = false;
+    connected = false;
+  }
+}
+
+/*
+ * Joins a room
+ */
+void IrcBot::joinRoom(char* chatroom) {
+
+  if (connected && auth) {
+    // Create JOIN IRC message
+    char* join_msg = (char*) calloc(strlen(chatroom) + 7, sizeof(char));
+    strcpy(join_msg, "JOIN ");
+    strcat(join_msg, chatroom);
+    strcat(join_msg, "\r\n");
+
+    sendData(join_msg);
+
+    free(join_msg);
   }
 }
 

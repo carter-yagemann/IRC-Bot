@@ -14,22 +14,29 @@ public:
   IrcBot(char * _nick, char * _usr);
   virtual ~IrcBot();
 
-  bool setup;
+  void connectToServer(char* host, char* port);
+  void joinRoom(char* room);
+  void recieveData();
+  bool charSearch(char* toSearch, char* searchFor);
 
-  void start(char* host, char* port, char* chatroom);
-  bool charSearch(char *toSearch, char *searchFor);
+  bool isConnected();
+  bool isAuth();
 
 private:
+
+  char* recv_buffer;
+
+  bool connected;
+  bool auth;
+
   char *port;
-  int s; //the socket descriptor
+  int s; // Socket
 
   char* nick;
   char* usr;
 
   char* nick_msg;
   char* usr_msg;
-
-  bool isConnected(char *buf);
 
   char * timeNow();
 
