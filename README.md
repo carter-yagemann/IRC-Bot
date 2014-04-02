@@ -38,4 +38,13 @@ And then they are ready to go.
 
 The following is an example of how to make a IRC bot and have it join a room:
 
-> Coming Soon
+    #include "ircbot.h"
+    
+    using namespace std;
+    
+    int main() {
+        IrcBot bot = IrcBot("NewBot", "New Bot");
+        bot.start("irc.freenode.net", "6667", "#room");
+        
+        return 0;
+    }
