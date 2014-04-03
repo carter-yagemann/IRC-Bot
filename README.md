@@ -56,3 +56,47 @@ The following is an example of how to make a IRC bot and have it join a room:
         
         return 0;
     }
+
+Bot Commands
+============
+
+connectToServer(host, port)
+---------------------------
+Opens up a connection with the given host on a given port.
+
+Example: `bot.connectToServer("irc.freenode.net", "6667");`
+
+joinChannel(channel)
+--------------------
+Joins the given channel.
+
+Example: `bot.joinChannel("#news");`
+
+recieveData()
+-------------
+Recieves data from the server and stores it in a buffer. Other methods can then parse this buffer and react 
+accordingly. This method will also automatically send PONG responses to the server's PINGs which is 
+necessary to prevent the server from disconnecting with the bot. For this reason, this method should be 
+called frequently.
+
+Example: `bot.recieveData();`
+
+searchData(search_string)
+-------------------------
+Searches the last recieved data for the given string. This search is performed on the raw server message 
+and is case sensitive. Returns true if the string is found.
+
+Example: `bot.searchData("Tell me a joke, bot.");`
+
+isConnected()
+-------------
+Returns true if the bot is currently connected to a server.
+
+Example: `bot.isConnected()`
+
+isAuth()
+--------
+Returns true if the bot is currently authenticated (has a nickname and real name) and is therefore ready to 
+join channels and send messages.
+
+Example: `bot.isAuth()`
