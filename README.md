@@ -8,9 +8,7 @@ able to quickly and easily make their own custom IRC bots in C++.
 
 Status
 ------
-This project is currently in its barebone stage. Bots can connect to a server and sit in a chatroom, but 
-not much else. This project is currently private, but I plan to open it up to the public if more 
-functionality is implimented.
+This project is currently in its basic functional stage.
 
 Dependencies
 ------------
@@ -134,4 +132,4 @@ Things To Possibly Impliment
 ============================
 * Method to log channels, PMs, etc
 * Method to leave rooms
-* Impliment timeNow method and timestamping
+* Impliment timestamping
