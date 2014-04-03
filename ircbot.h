@@ -52,7 +52,7 @@ private:
 
   bool sendData(char *msg);
 
-  void sendPong(char *buf);
+  void sendPong();
 
   void msgHandler(char *buf);
 };

@@ -187,9 +187,22 @@ bool IrcBot::sendData(char *msg) {
 /*
  * Send IRC pong to server (in response to ping)
  */
-void IrcBot::sendPong(char *buf) {
+void IrcBot::sendPong() {
 
-  char toSearch[] = "PING ";
+  char* ping = strstr(recv_buffer, "PING ");
+  char* servername = ping + 5;
+
+  if (ping == NULL) return;
+
+  // Construct PONG message
+  char* pong_msg = (char*) calloc(strlen(servername) + 5, sizeof(char));
+  strcpy(pong_msg, "PONG ");
+  strcat(pong_msg, servername);
+
+  // Send PONG message
+  sendData(pong_msg);
+
+/*  char toSearch[] = "PING ";
 
   for (int i = 0; i < strlen(buf);i++) {
     // If the active char is equil to the first search item then search toSearch
@@ -232,7 +245,7 @@ void IrcBot::sendPong(char *buf) {
         return;
       }
     }
-  }
+  }*/
 }
 
 /*
@@ -247,7 +260,7 @@ void IrcBot::recieveData() {
   // Check for ping
   char ping[] = "PING";
   if (searchData(ping))
-    sendPong(recv_buffer);
+    sendPong();
 
   // Check for disconnect
   if (numbytes == 0) {
