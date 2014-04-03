@@ -155,19 +155,6 @@ bool IrcBot::isAuth() {
 }
 
 /*
- * Returns current time
- */
-char * IrcBot::timeNow() {
-  time_t rawtime;
-  struct tm * timeinfo;
-
-  time ( &rawtime );
-  timeinfo = localtime ( &rawtime );
-
-  return asctime (timeinfo);
-}
-
-/*
  * Sends data to server
  */
 bool IrcBot::sendData(char *msg) {
@@ -223,7 +210,6 @@ void IrcBot::recieveData() {
   // Check for disconnect
   if (numbytes == 0) {
     cout << "-----CONNECTION CLOSED-----" << endl;
-    cout << timeNow() << endl;
     auth = false;
     connected = false;
     close(s);

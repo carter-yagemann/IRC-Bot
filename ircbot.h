@@ -48,8 +48,6 @@ private:
   char* nick_msg;
   char* usr_msg;
 
-  char * timeNow();
-
   bool sendData(char *msg);
 
   void sendPong();

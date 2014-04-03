@@ -103,7 +103,7 @@ Example: `bot.isAuth();`
 
 Things To Possibly Add
 ======================
-* Improve timeNow method
+* Impliment timeNow method
 * Method to log channels, PMs, etc
 * Method to message channels and users
 * More data searching methods
