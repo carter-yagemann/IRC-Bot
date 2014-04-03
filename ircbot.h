@@ -32,6 +32,10 @@ public:
 
   void sendMsg(char* dest, char* msg);
 
+  bool recievedMsg();
+  void getSender(char* buffer, int size);
+  void getMsg(char* buffer, int size);
+
   bool isConnected();
   bool isAuth();
 

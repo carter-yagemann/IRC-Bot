@@ -274,3 +274,51 @@ void IrcBot::sendMsg(char* dest, char* msg) {
   // Free memory
   free(privmsg);
 }
+
+/*
+ * Checks if last recieved message was a PRIVMSG
+ */
+bool IrcBot::recievedMsg() {
+  if (strstr(recv_buffer, " PRIVMSG ") != NULL)
+    return true;
+
+  return false;
+}
+
+/*
+ * Parses sender of a PRIVMSG
+ */
+void IrcBot::getSender(char* buffer, int size){
+  //Confirm PRIVMSG is in buffer
+  if (recievedMsg() && strstr(recv_buffer, "!~") != NULL) {
+    char * i;
+    char * end = strstr(recv_buffer, "!~");
+
+    // Name has a : in front of it which we want to skip
+    for (i = recv_buffer + 1; i < end && size - 1 > 0; i++) {
+      buffer[i - recv_buffer - 1] = *i;
+      size--;
+    }
+    buffer[i - recv_buffer - 1] = '\0';
+  }
+}
+
+/*
+ * Parses sender's message from a PRIVMSG
+ */
+void IrcBot::getMsg(char* buffer, int size) {
+  //Confirm PRIVMSG is in buffer
+  if (recievedMsg() && strstr(recv_buffer, "!~") != NULL) {
+    int i;
+
+    // Second : marks start of message
+    char * start = strchr(recv_buffer + 1, ':');
+    start++;
+
+    // Msg has a : in front of it which we want to skip
+    for (i = 0; start - recv_buffer + i < strlen(recv_buffer) && i < size - 1; i++)
+      buffer[i] = start[i];
+
+    buffer[i] = '\0';
+  }
+}

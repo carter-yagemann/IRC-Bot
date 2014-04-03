@@ -89,6 +89,26 @@ false. Returns true if the string is found.
 
 Example: `bot.searchData("Tell me a joke, bot.", false);`
 
+recievedMsg()
+-------------
+Checks if the last data recieved by recieveData() was a message. Returns true if it was.
+
+Example `bot.recievedMsg();`
+
+getSender(buffer, size)
+-----------------------
+Confirms that the data last recieved was a message and prints the sender's name into the buffer. Size 
+should be the size of the buffer and is used to prevent overflows.
+
+Example: `bot.getSender(username_buffer, 50);`
+
+getMsg(buffer, size)
+------------------------
+Confirms that the data last recieved was a message and prints the sender's message into the buffer. Size 
+should be the size of the buffer and is used to prevent overflows.
+
+Example: `bot.getMsg(message_buffer, 100);`
+
 sendMsg(dest, message)
 ----------------------
 Sends the message to the destination. The destination can be a channel, user or mask.
@@ -113,7 +133,5 @@ Example: `bot.isAuth();`
 Things To Possibly Impliment
 ============================
 * Method to log channels, PMs, etc
-* More data searching methods
-* Method to validate and parse messages
 * Method to leave rooms
 * Impliment timeNow method and timestamping
