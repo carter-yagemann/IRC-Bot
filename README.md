@@ -94,6 +94,7 @@ sendMsg(dest, message)
 Sends the message to the destination. The destination can be a channel, user or mask.
 
 Example: `bot.sendMsg("Steve", "Hi Steve!");`
+
 Example: `bot.sendMsg("#channel", "Hi everybody!");`
 
 isConnected()
