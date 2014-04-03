@@ -202,50 +202,8 @@ void IrcBot::sendPong() {
   // Send PONG message
   sendData(pong_msg);
 
-/*  char toSearch[] = "PING ";
+  free(pong_msg);
 
-  for (int i = 0; i < strlen(buf);i++) {
-    // If the active char is equil to the first search item then search toSearch
-    if (buf[i] == toSearch[0]) {
-      bool found = true;
-      // Search the char array for search field
-      for (int x = 1; x < 4; x++) {
-        if (buf[i+x]!=toSearch[x]) {
-          found = false;
-        }
-      }
-
-      if (found == true) {
-        int count = 0;
-        // Count the chars
-        for (int x = (i+strlen(toSearch)); x < strlen(buf);x++)
-          count++;
-
-        // Create the new char array
-        char returnHost[count + 5];
-        returnHost[0]='P';
-        returnHost[1]='O';
-        returnHost[2]='N';
-        returnHost[3]='G';
-        returnHost[4]=' ';
-
-        count = 0;
-        // Set the hostname data
-        for (int x = (i+strlen(toSearch)); x < strlen(buf);x++) {
-          returnHost[count+5]=buf[x];
-          count++;
-        }
-
-        // Send the pong
-        if (sendData(returnHost)) {
-          cout << timeNow() <<"  Ping Pong" << endl;
-        }
-
-
-        return;
-      }
-    }
-  }*/
 }
 
 /*
