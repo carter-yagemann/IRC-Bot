@@ -102,11 +102,11 @@ join channels and send messages.
 
 Example: `bot.isAuth();`
 
-Things To Possibly Add
-======================
-* Impliment timeNow method
+Things To Possibly Impliment
+============================
 * Method to log channels, PMs, etc
 * Method to message channels and users
 * More data searching methods
 * Method to validate and parse messages
 * Method to leave rooms
+* Impliment timeNow method and timestamping
