@@ -100,3 +100,10 @@ Returns true if the bot is currently authenticated (has a nickname and real name
 join channels and send messages.
 
 Example: `bot.isAuth()`
+
+Things To Possibly Add
+======================
+* Method to log channels, PMs, etc
+* Method to message channels and users
+* Method to validate and parse messages
+* Method to leave rooms
