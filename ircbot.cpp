@@ -19,6 +19,7 @@
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
 #include <unistd.h>
 #include <errno.h>
 #include <string.h>
@@ -132,10 +133,30 @@ void IrcBot::connectToServer(char* host, char* port) {
  * Searches a buffer for a string
  * (Search is case sensitive)
  */
-bool IrcBot::searchData(char* search_str) {
+bool IrcBot::searchData(char* search_str, bool case_sensitive) {
 
-  if (strstr(recv_buffer, search_str) != NULL)
-    return true;
+  if (case_sensitive) {
+
+    if (strstr(recv_buffer, search_str) != NULL)
+      return true;
+
+  } else {
+    // We need to lowercase both strings so the search is case-insensitive
+    int i;
+    char* lower_buffer = (char*) calloc(strlen(recv_buffer) + 1, sizeof(char));
+    for(i = 0; i < strlen(recv_buffer); i++)
+      lower_buffer[i] = tolower(recv_buffer[i]);
+
+    char* lower_search = (char*) calloc(strlen(search_str) + 1, sizeof(char));
+    for(i = 0; i < strlen(search_str); i++)
+      lower_search[i] = tolower(search_str[i]);
+
+    if (strstr(lower_buffer, lower_search) != NULL)
+      return true;
+
+    free(lower_buffer);
+    free(lower_search);
+  }
 
   return false;
 }
@@ -204,7 +225,7 @@ void IrcBot::recieveData() {
 
   // Check for ping
   char ping[] = "PING";
-  if (searchData(ping))
+  if (searchData(ping, true))
     sendPong();
 
   // Check for disconnect

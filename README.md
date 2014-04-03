@@ -81,12 +81,13 @@ called frequently.
 
 Example: `bot.recieveData();`
 
-searchData(search_string)
+searchData(search_string, case_sensitive)
 -------------------------
 Searches the last recieved data for the given string. This search is performed on the raw server message 
-and is case sensitive. Returns true if the string is found.
+and will be case sensitive if the second parameter is true or case insensitive if the second parameter is 
+false. Returns true if the string is found.
 
-Example: `bot.searchData("Tell me a joke, bot.");`
+Example: `bot.searchData("Tell me a joke, bot.", false);`
 
 isConnected()
 -------------
