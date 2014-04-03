@@ -122,29 +122,12 @@ void IrcBot::connectToServer(char* host, char* port) {
  * Searches a buffer for a string
  * (Search is case sensitive)
  */
-bool IrcBot::charSearch(char* toSearch, char* searchFor) {
-  int len = strlen(toSearch);
-  int forLen = strlen(searchFor);
+bool IrcBot::searchData(char* search_str) {
 
-  // Search through each char in toSearch
-  for (int i = 0; i < len;i++) {
-    // If the active char is equal to the first search item then search toSearch
-    if (searchFor[0] == toSearch[i]) {
-      bool found = true;
-      // Search the char array for search field
-      for (int x = 1; x < forLen; x++) {
-        if (toSearch[i+x] != searchFor[x]) {
-          found = false;
-        }
-      }
+  if (strstr(recv_buffer, search_str) != NULL)
+    return true;
 
-      //if found return true;
-      if (found == true)
-        return true;
-    }
-  }
-
-  return 0;
+  return false;
 }
 
 /*
@@ -181,6 +164,8 @@ bool IrcBot::sendData(char *msg) {
 
   int len = strlen(msg);
   int bytes_sent = send(s,msg,len,0);
+
+  cout << ">>" << msg;
 
   if (bytes_sent == 0)
     return false;
@@ -251,7 +236,7 @@ void IrcBot::recieveData() {
 
   // Check for ping
   char ping[] = "PING";
-  if (charSearch(recv_buffer, ping))
+  if (searchData(ping))
     sendPong(recv_buffer);
 
   // Check for disconnect
@@ -260,41 +245,24 @@ void IrcBot::recieveData() {
     cout << timeNow() << endl;
     auth = false;
     connected = false;
+    close(s);
   }
 }
 
 /*
  * Joins a room
  */
-void IrcBot::joinRoom(char* chatroom) {
+void IrcBot::joinChannel(char* channel) {
 
   if (connected && auth) {
     // Create JOIN IRC message
-    char* join_msg = (char*) calloc(strlen(chatroom) + 7, sizeof(char));
+    char* join_msg = (char*) calloc(strlen(channel) + 7, sizeof(char));
     strcpy(join_msg, "JOIN ");
-    strcat(join_msg, chatroom);
+    strcat(join_msg, channel);
     strcat(join_msg, "\r\n");
 
     sendData(join_msg);
 
     free(join_msg);
   }
-}
-
-/*
- * Message handling method
- */
-void IrcBot::msgHandler(char * buf)
-{
-  // Response to being Mentioned
-
-	/*
-	 * TODO: add you code to respod to commands here
-	 * the example below replys to the command hi scooby
-	 */
-	//if (charSearch(buf,"hi scooby"))
-	//{
-	//	sendData("PRIVMSG #ubuntu :hi, hows it going\r\n");
-	//}
-
 }

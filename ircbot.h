@@ -15,9 +15,9 @@ public:
   virtual ~IrcBot();
 
   void connectToServer(char* host, char* port);
-  void joinRoom(char* room);
+  void joinChannel(char* channel);
   void recieveData();
-  bool charSearch(char* toSearch, char* searchFor);
+  bool searchData(char* search_str);
 
   bool isConnected();
   bool isAuth();
