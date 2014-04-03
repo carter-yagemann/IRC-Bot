@@ -26,8 +26,11 @@ public:
 
   void connectToServer(char* host, char* port);
   void joinChannel(char* channel);
+
   void recieveData();
   bool searchData(char* search_str, bool case_sensitive);
+
+  void sendMsg(char* dest, char* msg);
 
   bool isConnected();
   bool isAuth();

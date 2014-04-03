@@ -254,3 +254,23 @@ void IrcBot::joinChannel(char* channel) {
     free(join_msg);
   }
 }
+
+/*
+ * Sends a message to the destination
+ */
+void IrcBot::sendMsg(char* dest, char* msg) {
+
+  // Craft PRIVMSG
+  char* privmsg = (char*) calloc(strlen(dest) + strlen(msg) + 12, sizeof(char));
+  strcpy(privmsg, "PRIVMSG ");
+  strcat(privmsg, dest);
+  strcat(privmsg, " :");
+  strcat(privmsg, msg);
+  strcat(privmsg, "\r\n");
+
+  // Send PRIVMSG
+  sendData(privmsg);
+
+  // Free memory
+  free(privmsg);
+}
