@@ -64,7 +64,7 @@ IrcBot::IrcBot(char * _nick, char * _usr) {
   nick_msg = strcat(nick_msg, _nick);
   nick_msg = strcat(nick_msg, "\r\n");
 
-  usr_msg = strcpy(usr_msg, "USER guest bot bot :");
+  usr_msg = strcpy(usr_msg, "USER guest 0 * :");
   usr_msg = strcat(usr_msg, _usr);
   usr_msg = strcat(usr_msg, "\r\n");
 }
