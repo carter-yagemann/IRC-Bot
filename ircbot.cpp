@@ -34,7 +34,7 @@
 
 using namespace std;
 
-#define MAXDATASIZE 1024
+#define MAXDATASIZE 512
 
 
 /*
