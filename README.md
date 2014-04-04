@@ -96,7 +96,9 @@ Example: `bot.searchData("Tell me a joke, bot.", false);`
 
 recievedMsg()
 -------------
-Checks if the last data recieved by recieveData() was a message. Returns true if it was.
+Checks if the last data recieved by recieveData() was a message. Returns true if it was. Since this method 
+only looks for the PRIVMSG command, it will return true for messages your bot sent. Therefore, you should 
+always check who the sender of the message is if you don't want your bot to respond to itself.
 
 Example `bot.recievedMsg();`
 
@@ -106,6 +108,14 @@ Confirms that the data last recieved was a message and prints the sender's name 
 should be the size of the buffer and is used to prevent overflows.
 
 Example: `bot.getSender(username_buffer, 50);`
+
+getDest(buffer, size)
+---------------------
+Confirms that the data last recieved was a message and prints the destination into the buffer. Size should 
+be the size of the buffer and is used to prevent overflows. This is a useful way to figure out which 
+channel a message came from or if the message was a direct message to the bot.
+
+Example: `bot.getDest(destination_buffer, 50);`
 
 getMsg(buffer, size)
 ------------------------

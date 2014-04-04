@@ -305,6 +305,25 @@ void IrcBot::getSender(char* buffer, int size){
 }
 
 /*
+ * Parses the destination of the PRIVMSG
+ */
+void IrcBot::getDest(char* buffer, int size) {
+  char* start = strstr(recv_buffer, "PRIVMSG ");
+  if (start == NULL) return;
+  start+= 8;
+
+  char* end = strstr(recv_buffer, " :");
+
+  char* i;
+  for (i = start; i < end && size - 1 > 0; i++) {
+    buffer[i - start] = *i;
+    size--;
+  }
+
+  buffer[i - start] = '\0';
+}
+
+/*
  * Parses sender's message from a PRIVMSG
  */
 void IrcBot::getMsg(char* buffer, int size) {

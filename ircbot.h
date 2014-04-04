@@ -38,6 +38,7 @@ public:
 
   bool recievedMsg();
   void getSender(char* buffer, int size);
+  void getDest(char* buffer, int size);
   void getMsg(char* buffer, int size);
 
   bool isConnected();
