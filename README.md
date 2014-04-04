@@ -71,6 +71,12 @@ Joins the given channel.
 
 Example: `bot.joinChannel("#news");`
 
+leaveChannel(channel)
+---------------------
+Leaves the given channel.
+
+Example: `bot.leaveChannel("#news");`
+
 recieveData()
 -------------
 Recieves data from the server and stores it in a buffer. Other methods can then parse this buffer and react 
@@ -146,7 +152,6 @@ Example: `bot.isAuth();`
 Things To Possibly Impliment
 ============================
 * Impliment logging for channels, PMs, etc
-* Impliment PART command
 * Impliment MODE command
 * Impliment admin commands (KICK, etc)
 * Impliment nick changing and identifying commands (NickServ)

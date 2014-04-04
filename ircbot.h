@@ -26,6 +26,7 @@ public:
 
   void connectToServer(char* host, char* port);
   void joinChannel(char* channel);
+  void leaveChannel(char* channel);
 
   void recieveData();
   bool searchData(char* search_str, bool case_sensitive);

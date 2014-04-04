@@ -364,3 +364,17 @@ void IrcBot::removeAway() {
   // an AWAY message with no parameters
   setAway(NULL);
 }
+
+/*
+ * Leaves a channel
+ */
+void IrcBot::leaveChannel(char* channel) {
+  char* part_msg = (char*) calloc(strlen(channel) + 7, sizeof(char));
+  strcpy(part_msg, "PART ");
+  strcat(part_msg, channel);
+  strcat(part_msg, "\r\n");
+
+  sendData(part_msg);
+
+  free(part_msg);
+}
