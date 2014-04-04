@@ -340,7 +340,12 @@ void IrcBot::getMsg(char* buffer, int size) {
     for (i = 0; start - recv_buffer + i < strlen(recv_buffer) && i < size - 1; i++)
       buffer[i] = start[i];
 
-    buffer[i] = '\0';
+    // Remove trailing \r\n if present
+    if (buffer[i - 2] == '\r' && buffer[i-1] == '\n') {
+      buffer[i - 2] = '\0';
+    } else {
+      buffer[i] = '\0';
+    }
   }
 }
 
