@@ -145,5 +145,9 @@ Example: `bot.isAuth();`
 
 Things To Possibly Impliment
 ============================
-* Method to log channels, PMs, etc
-* Method to leave rooms
+* Impliment logging for channels, PMs, etc
+* Impliment PART command
+* Impliment MODE command
+* Impliment admin commands (KICK, etc)
+* Impliment nick changing and identifying commands (NickServ)
+* Impliment response codes and response code handeling
