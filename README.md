@@ -8,7 +8,8 @@ able to quickly and easily make their own custom IRC bots in C++.
 
 Status
 ------
-This project is currently in its basic functional stage.
+This project is currently in its basic functional form. Not all IRC messages are 
+implimented yet, but the basic ones are.
 
 Dependencies
 ------------
@@ -114,6 +115,20 @@ Sends the message to the destination. The destination can be a channel, user or 
 Example: `bot.sendMsg("Steve", "Hi Steve!");`
 
 Example: `bot.sendMsg("#channel", "Hi everybody!");`
+
+setAway(message)
+----------------
+Sets the bot's away message to the given message.
+
+Example: `bot.setAway("I am away right now");`
+
+removeAway()
+------------
+Removes the bot's away message. Since away messages are disabled by sending an AWAY 
+command with no parameter, as defined in the IRC protocol, this method just calls 
+setAway with a null pointer.
+
+Example: `bot.removeAway()'`
 
 isConnected()
 -------------

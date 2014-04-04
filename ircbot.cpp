@@ -335,3 +335,32 @@ void IrcBot::timestamp(char* buffer, int size) {
 
   strftime(buffer, size, "%m%d%Y%H%M%S", timeinfo);
 }
+
+/*
+ * Sets an away message
+ */
+void IrcBot::setAway(char* msg) {
+  // Sending an away with no parameters disables away
+  if (msg == NULL || msg == 0) {
+    char away_msg[] = "AWAY\r\n";
+    sendData(away_msg);
+  } else {
+    char* away_msg = (char*) calloc(strlen(msg) + 8, sizeof(char));
+    strcpy(away_msg, "AWAY :");
+    strcat(away_msg, msg);
+    strcat(away_msg, "\r\n");
+
+    sendData(away_msg);
+
+    free(away_msg);
+  }
+}
+
+/*
+ * Removes away message
+ */
+void IrcBot::removeAway() {
+  // According to the IRC standard, AWAY is disabled by sending
+  // an AWAY message with no parameters
+  setAway(NULL);
+}

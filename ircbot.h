@@ -32,6 +32,9 @@ public:
 
   void sendMsg(char* dest, char* msg);
 
+  void setAway(char* msg);
+  void removeAway();
+
   bool recievedMsg();
   void getSender(char* buffer, int size);
   void getMsg(char* buffer, int size);
