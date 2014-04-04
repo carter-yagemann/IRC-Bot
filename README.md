@@ -132,4 +132,3 @@ Things To Possibly Impliment
 ============================
 * Method to log channels, PMs, etc
 * Method to leave rooms
-* Impliment timestamping

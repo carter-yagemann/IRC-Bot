@@ -41,6 +41,8 @@ public:
 
 private:
 
+  void timestamp(char* buffer, int size);
+
   char* recv_buffer;
 
   bool connected;

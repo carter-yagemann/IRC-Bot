@@ -221,6 +221,7 @@ void IrcBot::recieveData() {
 
   int numbytes = recv(s, recv_buffer, MAXDATASIZE - 1, 0);
   recv_buffer[numbytes] = '\0';
+
   cout << recv_buffer;
 
   // Check for ping
@@ -321,4 +322,16 @@ void IrcBot::getMsg(char* buffer, int size) {
 
     buffer[i] = '\0';
   }
+}
+
+/*
+ * Generates string representing current time
+ */
+void IrcBot::timestamp(char* buffer, int size) {
+  time_t rawtime;
+  struct tm* timeinfo;
+  time(&rawtime);
+  timeinfo = localtime(&rawtime);
+
+  strftime(buffer, size, "%m%d%Y%H%M%S", timeinfo);
 }
