@@ -57,16 +57,16 @@ IrcBot::IrcBot(char * _nick, char * _usr) {
   usr  = strcpy(usr, _usr);
 
   // Create NICK and USER messages
-  nick_msg = (char*) calloc(strlen(_nick) + 7, sizeof(char));
-  usr_msg  = (char*) calloc(strlen(_usr) + 22, sizeof(char));
+  nick_msg = (char*) calloc(strlen(_nick) + 8, sizeof(char));
+  usr_msg  = (char*) calloc(strlen(_usr) + 19, sizeof(char));
 
   nick_msg = strcpy(nick_msg, "NICK ");
   nick_msg = strcat(nick_msg, _nick);
-  nick_msg = strcat(nick_msg, "\r\n");
+  nick_msg = strcat(nick_msg, "\r\n\0");
 
   usr_msg = strcpy(usr_msg, "USER guest 0 * :");
   usr_msg = strcat(usr_msg, _usr);
-  usr_msg = strcat(usr_msg, "\r\n");
+  usr_msg = strcat(usr_msg, "\r\n\0");
 }
 
 /*
@@ -203,9 +203,10 @@ void IrcBot::sendPong() {
   if (ping == NULL) return;
 
   // Construct PONG message
-  char* pong_msg = (char*) calloc(strlen(servername) + 5, sizeof(char));
+  char* pong_msg = (char*) calloc(strlen(servername) + 6, sizeof(char));
   strcpy(pong_msg, "PONG ");
   strcat(pong_msg, servername);
+  strcat(pong_msg, "\0");
 
   // Send PONG message
   sendData(pong_msg);
@@ -245,10 +246,10 @@ void IrcBot::joinChannel(char* channel) {
 
   if (connected && auth) {
     // Create JOIN IRC message
-    char* join_msg = (char*) calloc(strlen(channel) + 7, sizeof(char));
+    char* join_msg = (char*) calloc(strlen(channel) + 8, sizeof(char));
     strcpy(join_msg, "JOIN ");
     strcat(join_msg, channel);
-    strcat(join_msg, "\r\n");
+    strcat(join_msg, "\r\n\0");
 
     sendData(join_msg);
 
@@ -262,12 +263,12 @@ void IrcBot::joinChannel(char* channel) {
 void IrcBot::sendMsg(char* dest, char* msg) {
 
   // Craft PRIVMSG
-  char* privmsg = (char*) calloc(strlen(dest) + strlen(msg) + 12, sizeof(char));
+  char* privmsg = (char*) calloc(strlen(dest) + strlen(msg) + 13, sizeof(char));
   strcpy(privmsg, "PRIVMSG ");
   strcat(privmsg, dest);
   strcat(privmsg, " :");
   strcat(privmsg, msg);
-  strcat(privmsg, "\r\n");
+  strcat(privmsg, "\r\n\0");
 
   // Send PRIVMSG
   sendData(privmsg);
@@ -364,10 +365,10 @@ void IrcBot::setAway(char* msg) {
     char away_msg[] = "AWAY\r\n";
     sendData(away_msg);
   } else {
-    char* away_msg = (char*) calloc(strlen(msg) + 8, sizeof(char));
+    char* away_msg = (char*) calloc(strlen(msg) + 9, sizeof(char));
     strcpy(away_msg, "AWAY :");
     strcat(away_msg, msg);
-    strcat(away_msg, "\r\n");
+    strcat(away_msg, "\r\n\0");
 
     sendData(away_msg);
 
@@ -388,10 +389,10 @@ void IrcBot::removeAway() {
  * Leaves a channel
  */
 void IrcBot::leaveChannel(char* channel) {
-  char* part_msg = (char*) calloc(strlen(channel) + 7, sizeof(char));
+  char* part_msg = (char*) calloc(strlen(channel) + 8, sizeof(char));
   strcpy(part_msg, "PART ");
   strcat(part_msg, channel);
-  strcat(part_msg, "\r\n");
+  strcat(part_msg, "\r\n\0");
 
   sendData(part_msg);
 
