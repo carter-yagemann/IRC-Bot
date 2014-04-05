@@ -4,16 +4,15 @@ IRC Bot
 Description
 -----------
 The goal of this project is to make a simple IRC bot library using C++. Users of this library should be 
-able to quickly and easily make their own custom IRC bots in C++.
+able to quickly and easily make their own custom IRC bots.
 
 Status
 ------
-This project is currently in its basic functional form. Not all IRC messages are 
-implimented yet, but the basic ones are.
+This project is currently open to the public and is still being further developed.
 
 Dependencies
 ------------
-This project currently only utilizes standard C++ libraries and should have good portability across 
+This project currently only utilizes GNU C++ libraries and should have good portability across 
 different architectures.
 
 Compilation
@@ -35,7 +34,7 @@ their main program:
 
 And then they are ready to go.
 
-The following is an example of how to make a IRC bot and have it join a room:
+The following is an example of how to make a IRC bot and have it join a channel:
 
     #include "ircbot.h"
     
@@ -59,6 +58,14 @@ The following is an example of how to make a IRC bot and have it join a room:
 Bot Commands
 ============
 
+IrcBot(nickname, username)
+--------------------------
+This method must be called when creating a new bot object. Nickname is the initial nickname the bot 
+will use when it joins the server and username is the bot's "real name" as required according to the IRC 
+protocol.
+
+Exampe: `IrcBot bot = IrcBot("NewBot", "New Bot");`
+
 connectToServer(host, port)
 ---------------------------
 Opens up a connection with the given host on a given port.
@@ -76,6 +83,12 @@ leaveChannel(channel)
 Leaves the given channel.
 
 Example: `bot.leaveChannel("#news");`
+
+changeNick(nickname)
+--------------------
+Changes the bot's nickname to the new nickname and sends this change to the IRC server.
+
+Example: `bot.changeNick("NewNickname");`
 
 recieveData()
 -------------
@@ -161,9 +174,7 @@ Example: `bot.isAuth();`
 
 Things To Possibly Impliment
 ============================
-* Impliment NICK and USER methods and cleanup constructor
 * Impliment logging for channels, PMs, etc
 * Impliment MODE command
 * Impliment admin commands (KICK, etc)
-* Impliment nick changing and identifying commands (NickServ)
 * Impliment response codes and response code handeling

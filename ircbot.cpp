@@ -56,17 +56,6 @@ IrcBot::IrcBot(char * _nick, char * _usr) {
   nick = strcpy(nick, _nick);
   usr  = strcpy(usr, _usr);
 
-  // Create NICK and USER messages
-  nick_msg = (char*) calloc(strlen(_nick) + 8, sizeof(char));
-  usr_msg  = (char*) calloc(strlen(_usr) + 19, sizeof(char));
-
-  nick_msg = strcpy(nick_msg, "NICK ");
-  nick_msg = strcat(nick_msg, _nick);
-  nick_msg = strcat(nick_msg, "\r\n\0");
-
-  usr_msg = strcpy(usr_msg, "USER guest 0 * :");
-  usr_msg = strcat(usr_msg, _usr);
-  usr_msg = strcat(usr_msg, "\r\n\0");
 }
 
 /*
@@ -77,8 +66,6 @@ IrcBot::~IrcBot() {
   close (s);
 
   // Free all dynamically allocated memory
-  free(nick_msg);
-  free(usr_msg);
   free(nick);
   free(usr);
   free(recv_buffer);
@@ -124,8 +111,8 @@ void IrcBot::connectToServer(char* host, char* port) {
     recieveData();
 
   // Send NICK and USER messages to IRC server
-  sendData(nick_msg);
-  sendData(usr_msg);
+  changeNick(nick);
+  sendUser();
   auth = true;
 }
 
@@ -249,7 +236,7 @@ void IrcBot::joinChannel(char* channel) {
     char* join_msg = (char*) calloc(strlen(channel) + 8, sizeof(char));
     strcpy(join_msg, "JOIN ");
     strcat(join_msg, channel);
-    strcat(join_msg, "\r\n\0");
+    strcat(join_msg, "\r\n");
 
     sendData(join_msg);
 
@@ -268,7 +255,7 @@ void IrcBot::sendMsg(char* dest, char* msg) {
   strcat(privmsg, dest);
   strcat(privmsg, " :");
   strcat(privmsg, msg);
-  strcat(privmsg, "\r\n\0");
+  strcat(privmsg, "\r\n");
 
   // Send PRIVMSG
   sendData(privmsg);
@@ -373,7 +360,7 @@ void IrcBot::setAway(char* msg) {
     char* away_msg = (char*) calloc(strlen(msg) + 9, sizeof(char));
     strcpy(away_msg, "AWAY :");
     strcat(away_msg, msg);
-    strcat(away_msg, "\r\n\0");
+    strcat(away_msg, "\r\n");
 
     sendData(away_msg);
 
@@ -397,9 +384,45 @@ void IrcBot::leaveChannel(char* channel) {
   char* part_msg = (char*) calloc(strlen(channel) + 8, sizeof(char));
   strcpy(part_msg, "PART ");
   strcat(part_msg, channel);
-  strcat(part_msg, "\r\n\0");
+  strcat(part_msg, "\r\n");
 
   sendData(part_msg);
 
   free(part_msg);
+}
+
+/*
+ * Sends server USER information
+ */
+void IrcBot::sendUser() {
+  char* user_msg = (char*) calloc(strlen(usr) + 19, sizeof(char));
+
+  strcpy(user_msg, "USER guest 0 * :");
+  strcat(user_msg, usr);
+  strcat(user_msg, "\r\n");
+
+  sendData(user_msg);
+
+  free(user_msg);
+}
+
+/*
+ * Changes the bot's nickname and sends NICK message
+ */
+void IrcBot::changeNick(char* _nick) {
+
+  char* nick_msg = (char*) calloc(strlen(_nick) + 8, sizeof(char));
+
+  strcpy(nick_msg, "NICK ");
+  strcat(nick_msg, _nick);
+  strcat(nick_msg, "\r\n");
+
+  sendData(nick_msg);
+
+  free(nick_msg);
+
+  // Update bot's name
+  free(nick);
+  nick = (char*) calloc(strlen(_nick) + 1, sizeof(char));
+  strcpy(nick, _nick);
 }

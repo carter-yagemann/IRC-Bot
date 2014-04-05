@@ -28,6 +28,8 @@ public:
   void joinChannel(char* channel);
   void leaveChannel(char* channel);
 
+  void changeNick(char* _nick);
+
   void recieveData();
   bool searchData(char* search_str, bool case_sensitive);
 
@@ -59,8 +61,7 @@ private:
   char* nick;
   char* usr;
 
-  char* nick_msg;
-  char* usr_msg;
+  void sendUser();
 
   bool sendData(char *msg);
 
