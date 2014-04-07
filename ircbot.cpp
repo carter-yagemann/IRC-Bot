@@ -118,7 +118,6 @@ void IrcBot::connectToServer(char* host, char* port) {
 
 /*
  * Searches a buffer for a string
- * (Search is case sensitive)
  */
 bool IrcBot::searchData(char* search_str, bool case_sensitive) {
 
@@ -193,13 +192,11 @@ void IrcBot::sendPong() {
   char* pong_msg = (char*) calloc(strlen(servername) + 6, sizeof(char));
   strcpy(pong_msg, "PONG ");
   strcat(pong_msg, servername);
-  strcat(pong_msg, "\0");
 
   // Send PONG message
   sendData(pong_msg);
 
   free(pong_msg);
-
 }
 
 /*
