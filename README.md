@@ -157,7 +157,7 @@ Removes the bot's away message. Since away messages are disabled by sending an A
 command with no parameter, as defined in the IRC protocol, this method just calls 
 setAway with a null pointer.
 
-Example: `bot.removeAway()'`
+Example: `bot.removeAway();`
 
 isConnected()
 -------------
