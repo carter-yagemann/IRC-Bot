@@ -165,6 +165,16 @@ Sends request to become operator using the given username and password.
 
 Example: `bot.becomeOperator("IrcBot", "password");`
 
+setMode(target, mode, filter)
+-----------------------------
+Sends a message to the server to set the mode. Target can be a user or channel and 
+filter is optional. Filter should be set to NULL when it is not to be used. The message 
+that is sent takes the form of "MODE target mode filter". For more details on how to use 
+the mode message, refer to the IRC protocol as outlined in RFC 1459.
+
+Example: `bot.setMode("#channel", "+o", "Steve");`
+Example: `bot.setMode("#channel", "+im", NULL);`
+
 isConnected()
 -------------
 Returns true if the bot is currently connected to a server.
@@ -181,6 +191,5 @@ Example: `bot.isAuth();`
 Things To Possibly Impliment
 ============================
 * Impliment logging for channels, PMs, etc
-* Impliment MODE command
 * Impliment admin commands (KICK, etc)
 * Impliment response codes and response code handeling

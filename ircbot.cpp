@@ -441,3 +441,32 @@ void IrcBot::becomeOperator(char* user, char* pass) {
 
   free(oper_msg);
 }
+
+/*
+ * Sends MODE message
+ */
+void IrcBot::setMode(char* target, char* mode, char* filter){
+  // Filter parameter is optional
+  int payload_size;
+  if (filter == NULL) {
+    payload_size = strlen(target) + strlen(mode) + 9;
+  } else {
+    payload_size = strlen(target) + strlen(mode) + strlen(filter) + 10;
+  }
+
+  char* mode_msg = (char*) calloc(payload_size, sizeof(char));
+
+  strcpy(mode_msg, "MODE ");
+  strcat(mode_msg, target);
+  strcat(mode_msg, " ");
+  strcat(mode_msg, mode);
+  if (filter != NULL) {
+    strcat(mode_msg, " ");
+    strcat(mode_msg, filter);
+  }
+  strcat(mode_msg, "\r\n");
+
+  sendData(mode_msg);
+
+  free(mode_msg);
+}
