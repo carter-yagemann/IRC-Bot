@@ -423,3 +423,21 @@ void IrcBot::changeNick(char* _nick) {
   nick = (char*) calloc(strlen(_nick) + 1, sizeof(char));
   strcpy(nick, _nick);
 }
+
+/*
+ * Sends an OPER request
+ */
+void IrcBot::becomeOperator(char* user, char* pass) {
+
+  char* oper_msg = (char*) calloc(strlen(user) + strlen(pass) + 9, sizeof(char));
+
+  strcpy(oper_msg, "OPER ");
+  strcat(oper_msg, user);
+  strcat(oper_msg, " ");
+  strcat(oper_msg, pass);
+  strcat(oper_msg, "\r\n");
+
+  sendData(oper_msg);
+
+  free(oper_msg);
+}

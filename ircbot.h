@@ -38,6 +38,8 @@ public:
   void setAway(char* msg);
   void removeAway();
 
+  void becomeOperator(char* user, char* pass);
+
   bool recievedMsg();
   void getSender(char* buffer, int size);
   void getDest(char* buffer, int size);

@@ -159,6 +159,12 @@ setAway with a null pointer.
 
 Example: `bot.removeAway();`
 
+becomeOperator(username, password)
+----------------------------------
+Sends request to become operator using the given username and password.
+
+Example: `bot.becomeOperator("IrcBot", "password");`
+
 isConnected()
 -------------
 Returns true if the bot is currently connected to a server.
