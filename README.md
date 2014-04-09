@@ -173,6 +173,7 @@ that is sent takes the form of "MODE target mode filter". For more details on ho
 the mode message, refer to the IRC protocol as outlined in RFC 1459.
 
 Example: `bot.setMode("#channel", "+o", "Steve");`
+
 Example: `bot.setMode("#channel", "+im", NULL);`
 
 isConnected()
