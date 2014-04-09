@@ -228,17 +228,14 @@ void IrcBot::recieveData() {
  */
 void IrcBot::joinChannel(char* channel) {
 
-  if (connected && auth) {
-    // Create JOIN IRC message
-    char* join_msg = (char*) calloc(strlen(channel) + 8, sizeof(char));
-    strcpy(join_msg, "JOIN ");
-    strcat(join_msg, channel);
-    strcat(join_msg, "\r\n");
+  char* join_msg = (char*) calloc(strlen(channel) + 8, sizeof(char));
+  strcpy(join_msg, "JOIN ");
+  strcat(join_msg, channel);
+  strcat(join_msg, "\r\n");
 
-    sendData(join_msg);
+  sendData(join_msg);
 
-    free(join_msg);
-  }
+  free(join_msg);
 }
 
 /*
@@ -350,8 +347,8 @@ void IrcBot::timestamp(char* buffer, int size) {
  */
 void IrcBot::setAway(char* msg) {
   // Sending an away with no parameters disables away
-  if (msg == NULL || msg == 0) {
-    char away_msg[] = "AWAY\r\n";
+  if (msg == NULL) {
+    char away_msg[] = "AWAY\r\n\0";
     sendData(away_msg);
   } else {
     char* away_msg = (char*) calloc(strlen(msg) + 9, sizeof(char));
