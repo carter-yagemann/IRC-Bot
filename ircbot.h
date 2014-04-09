@@ -70,8 +70,6 @@ private:
   bool sendData(char *msg);
 
   void sendPong();
-
-  void msgHandler(char *buf);
 };
 
 #endif /* IRCBOT_H_ */
