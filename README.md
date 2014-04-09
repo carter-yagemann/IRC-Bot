@@ -192,5 +192,6 @@ Example: `bot.isAuth();`
 Things To Possibly Impliment
 ============================
 * Impliment logging for channels, PMs, etc
-* Impliment admin commands (KICK, etc)
+* Impliment TOPIC getter and setter methods
+* Impliment KICK and INVITE methods
 * Impliment response codes and response code handeling
