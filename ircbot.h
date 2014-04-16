@@ -42,6 +42,8 @@ public:
 
   void becomeOperator(char* user, char* pass);
 
+  void setTopic(char* channel, char* msg);
+
   bool recievedMsg();
   void getSender(char* buffer, int size);
   void getDest(char* buffer, int size);

@@ -165,6 +165,12 @@ Sends request to become operator using the given username and password.
 
 Example: `bot.becomeOperator("IrcBot", "password");`
 
+setTopic(channel, message)
+--------------------------
+Sets the topic for the given channel to the given message.
+
+Example: `bot.setTopic("#news", "New topic.");`
+
 setMode(target, mode, filter)
 -----------------------------
 Sends a message to the server to set the mode. Target can be a user or channel and 

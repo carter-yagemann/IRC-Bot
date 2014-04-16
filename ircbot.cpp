@@ -467,3 +467,21 @@ void IrcBot::setMode(char* target, char* mode, char* filter){
 
   free(mode_msg);
 }
+
+/*
+ * Sends TOPIC message to change topic
+ */
+void IrcBot::setTopic(char* channel, char* msg) {
+
+  char* topic_msg = (char*) calloc(strlen(channel) + strlen(msg) + 11, sizeof(char));
+
+  strcpy(topic_msg, "TOPIC ");
+  strcat(topic_msg, channel);
+  strcat(topic_msg, " :");
+  strcat(topic_msg, msg);
+  strcat(topic_msg, "\r\n");
+
+  sendData(topic_msg);
+
+  free(topic_msg);
+}
