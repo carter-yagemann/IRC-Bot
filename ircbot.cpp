@@ -486,6 +486,9 @@ void IrcBot::setTopic(char* channel, char* msg) {
   free(topic_msg);
 }
 
+/*
+ * Sends KICK message to kick user
+ */
 void IrcBot::kickUser(char* channel, char* user, char* msg) {
   // msg can be null
   int msg_size;
@@ -509,4 +512,22 @@ void IrcBot::kickUser(char* channel, char* user, char* msg) {
   sendData(kick_msg);
 
   free(kick_msg);
+}
+
+/*
+ * Sends INVITE message to invite a user to a channel
+ */
+void IrcBot::inviteUser(char* user, char* channel) {
+
+  char* invite_msg = (char*) calloc(strlen(user) + strlen(channel) + 11, sizeof(char));
+
+  strcpy(invite_msg, "INVITE ");
+  strcat(invite_msg, user);
+  strcat(invite_msg, " ");
+  strcat(invite_msg, channel);
+  strcat(invite_msg, "\r\n");
+
+  sendData(invite_msg);
+
+  free(invite_msg);
 }

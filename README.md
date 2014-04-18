@@ -179,6 +179,12 @@ to the kicked user.
 
 Example: `bot.kickUser("#news", "John", "Spamming");`
 
+inviteUser(user, channel)
+-------------------------
+Invites the user to the channel.
+
+Example: `bot.inviteUser("John", "#news");`
+
 setMode(target, mode, filter)
 -----------------------------
 Sends a message to the server to set the mode. Target can be a user or channel and 
@@ -206,5 +212,4 @@ Example: `bot.isAuth();`
 Things To Possibly Impliment
 ============================
 * Impliment logging for channels, PMs, etc
-* Impliment KICK and INVITE methods
 * Impliment response codes and response code handeling
