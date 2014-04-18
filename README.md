@@ -171,6 +171,14 @@ Sets the topic for the given channel to the given message.
 
 Example: `bot.setTopic("#news", "New topic.");`
 
+kickUser(channel, user, message)
+--------------------------------
+Kicks the user from the channel if the bot has permission to do so. The user will 
+recieve the message when they are kicked. If message is NULL, no message will be given 
+to the kicked user.
+
+Example: `bot.kickUser("#news", "John", "Spamming");`
+
 setMode(target, mode, filter)
 -----------------------------
 Sends a message to the server to set the mode. Target can be a user or channel and 
@@ -198,6 +206,5 @@ Example: `bot.isAuth();`
 Things To Possibly Impliment
 ============================
 * Impliment logging for channels, PMs, etc
-* Impliment TOPIC getter and setter methods
 * Impliment KICK and INVITE methods
 * Impliment response codes and response code handeling

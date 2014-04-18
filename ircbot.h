@@ -44,6 +44,8 @@ public:
 
   void setTopic(char* channel, char* msg);
 
+  void kickUser(char* channel, char* user, char* msg);
+
   bool recievedMsg();
   void getSender(char* buffer, int size);
   void getDest(char* buffer, int size);

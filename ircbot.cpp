@@ -485,3 +485,28 @@ void IrcBot::setTopic(char* channel, char* msg) {
 
   free(topic_msg);
 }
+
+void IrcBot::kickUser(char* channel, char* user, char* msg) {
+  // msg can be null
+  int msg_size;
+  if (msg == NULL) {
+    msg_size = strlen(channel) + strlen(user) + 9;
+  } else {
+    msg_size = strlen(channel) + strlen(user) + strlen(msg) + 11;
+  }
+  char* kick_msg = (char*) calloc(msg_size, sizeof(char));
+
+  strcpy(kick_msg, "KICK ");
+  strcat(kick_msg, channel);
+  strcat(kick_msg, " ");
+  strcat(kick_msg, user);
+  if (msg != NULL) {
+    strcat(kick_msg, " :");
+    strcat(kick_msg, msg);
+  }
+  strcat(kick_msg, "\r\n");
+
+  sendData(kick_msg);
+
+  free(kick_msg);
+}
