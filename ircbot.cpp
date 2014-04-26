@@ -47,7 +47,6 @@ IrcBot::IrcBot(char * _nick, char * _usr) {
 
   // Bot isn't connected to a server yet
   connected = false;
-  auth = false;
 
   // Store Nickname and Username
   nick = (char*) calloc(strlen(_nick) + 1, sizeof(char));
@@ -113,7 +112,6 @@ void IrcBot::connectToServer(char* host, char* port) {
   // Send NICK and USER messages to IRC server
   changeNick(nick);
   sendUser();
-  auth = true;
 }
 
 /*
@@ -152,13 +150,6 @@ bool IrcBot::searchData(char* search_str, bool case_sensitive) {
  */
 bool IrcBot::isConnected() {
   return connected;
-}
-
-/*
- * Confirms IrcBot is authenticated
- */
-bool IrcBot::isAuth() {
-  return auth;
 }
 
 /*
@@ -217,7 +208,6 @@ void IrcBot::recieveData() {
   // Check for disconnect
   if (numbytes == 0) {
     cout << "-----CONNECTION CLOSED-----" << endl;
-    auth = false;
     connected = false;
     close(s);
   }

@@ -53,7 +53,6 @@ public:
   void getMsg(char* buffer, int size);
 
   bool isConnected();
-  bool isAuth();
 
 private:
 
@@ -62,7 +61,6 @@ private:
   char* recv_buffer;
 
   bool connected;
-  bool auth;
 
   char *port;
   int s; // Socket

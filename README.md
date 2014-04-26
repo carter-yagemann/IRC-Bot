@@ -202,13 +202,6 @@ Returns true if the bot is currently connected to a server.
 
 Example: `bot.isConnected();`
 
-isAuth()
---------
-Returns true if the bot is currently authenticated (has a nickname and real name) and is therefore ready to 
-join channels and send messages.
-
-Example: `bot.isAuth();`
-
 Things To Possibly Impliment
 ============================
 * Impliment logging for channels, PMs, etc
