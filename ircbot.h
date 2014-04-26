@@ -31,7 +31,6 @@ public:
   void changeNick(char* _nick);
 
   void recieveData();
-  bool searchData(char* search_str, bool case_sensitive);
 
   void sendMsg(char* dest, char* msg);
 
@@ -68,9 +67,17 @@ private:
   char* nick;
   char* usr;
 
+  // For parsing messages
+  char* prefix;
+  char* command;
+  char* params;
+  char* trail;
+
   void sendUser();
 
   bool sendData(char *msg);
+
+  void parseData();
 
   void sendPong();
 };

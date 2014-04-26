@@ -115,37 +115,6 @@ void IrcBot::connectToServer(char* host, char* port) {
 }
 
 /*
- * Searches a buffer for a string
- */
-bool IrcBot::searchData(char* search_str, bool case_sensitive) {
-
-  if (case_sensitive) {
-
-    if (strstr(recv_buffer, search_str) != NULL)
-      return true;
-
-  } else {
-    // We need to lowercase both strings so the search is case-insensitive
-    int i;
-    char* lower_buffer = (char*) calloc(strlen(recv_buffer) + 1, sizeof(char));
-    for(i = 0; i < strlen(recv_buffer); i++)
-      lower_buffer[i] = tolower(recv_buffer[i]);
-
-    char* lower_search = (char*) calloc(strlen(search_str) + 1, sizeof(char));
-    for(i = 0; i < strlen(search_str); i++)
-      lower_search[i] = tolower(search_str[i]);
-
-    if (strstr(lower_buffer, lower_search) != NULL)
-      return true;
-
-    free(lower_buffer);
-    free(lower_search);
-  }
-
-  return false;
-}
-
-/*
  * Confirms IrcBot is connected
  */
 bool IrcBot::isConnected() {
@@ -173,16 +142,10 @@ bool IrcBot::sendData(char *msg) {
  * Send IRC pong to server (in response to ping)
  */
 void IrcBot::sendPong() {
-
-  char* ping = strstr(recv_buffer, "PING ");
-  char* servername = ping + 5;
-
-  if (ping == NULL) return;
-
   // Construct PONG message
-  char* pong_msg = (char*) calloc(strlen(servername) + 6, sizeof(char));
+  char* pong_msg = (char*) calloc(strlen(trail) + 6, sizeof(char));
   strcpy(pong_msg, "PONG ");
-  strcat(pong_msg, servername);
+  strcat(pong_msg, trail);
 
   // Send PONG message
   sendData(pong_msg);
@@ -200,9 +163,10 @@ void IrcBot::recieveData() {
 
   cout << recv_buffer;
 
+  parseData();
+
   // Check for ping
-  char ping[] = "PING";
-  if (searchData(ping, true))
+  if (strcmp(command, "PING") == 0)
     sendPong();
 
   // Check for disconnect
@@ -252,7 +216,7 @@ void IrcBot::sendMsg(char* dest, char* msg) {
  * Checks if last recieved message was a PRIVMSG
  */
 bool IrcBot::recievedMsg() {
-  if (strstr(recv_buffer, " PRIVMSG ") != NULL)
+  if (strcmp(command, "PRIVMSG") == 0)
     return true;
 
   return false;
@@ -262,17 +226,12 @@ bool IrcBot::recievedMsg() {
  * Parses sender of a PRIVMSG
  */
 void IrcBot::getSender(char* buffer, int size){
-  //Confirm PRIVMSG is in buffer
-  if (recievedMsg() && strstr(recv_buffer, "!~") != NULL) {
-    char * i;
-    char * end = strstr(recv_buffer, "!~");
 
-    // Name has a : in front of it which we want to skip
-    for (i = recv_buffer + 1; i < end && size - 1 > 0; i++) {
-      buffer[i - recv_buffer - 1] = *i;
-      size--;
-    }
-    buffer[i - recv_buffer - 1] = '\0';
+  if (prefix != NULL) {
+    strncpy(buffer, prefix, size);
+    buffer[size - 1] = '\0';
+  } else {
+    buffer[0] = '\0';
   }
 }
 
@@ -280,43 +239,30 @@ void IrcBot::getSender(char* buffer, int size){
  * Parses the destination of the PRIVMSG
  */
 void IrcBot::getDest(char* buffer, int size) {
-  char* start = strstr(recv_buffer, "PRIVMSG ");
-  if (start == NULL) return;
-  start+= 8;
 
-  char* end = strstr(recv_buffer, " :");
-
-  char* i;
-  for (i = start; i < end && size - 1 > 0; i++) {
-    buffer[i - start] = *i;
-    size--;
+  if (params != NULL) {
+    strncpy(buffer, params, size);
+    buffer[size - 1] = '\0';
+  } else {
+    buffer[0] = '\0';
   }
-
-  buffer[i - start] = '\0';
 }
 
 /*
  * Parses sender's message from a PRIVMSG
  */
 void IrcBot::getMsg(char* buffer, int size) {
-  //Confirm PRIVMSG is in buffer
-  if (recievedMsg() && strstr(recv_buffer, "!~") != NULL) {
-    int i;
 
-    // Second : marks start of message
-    char * start = strchr(recv_buffer + 1, ':');
-    start++;
-
-    // Msg has a : in front of it which we want to skip
-    for (i = 0; start - recv_buffer + i < strlen(recv_buffer) && i < size - 1; i++)
-      buffer[i] = start[i];
-
-    // Remove trailing \r\n if present
-    if (buffer[i - 2] == '\r' && buffer[i-1] == '\n') {
-      buffer[i - 2] = '\0';
+  if (trail != NULL) {
+    strncpy(buffer, trail, size);
+    // Remove trailing control characters
+    if (buffer[size - 1] == '\n' && buffer[size - 2] == '\r') {
+      buffer[size - 2] == '\0';
     } else {
-      buffer[i] = '\0';
+      buffer[size - 1] = '\0';
     }
+  } else {
+    buffer[0] = '\0';
   }
 }
 
@@ -520,4 +466,45 @@ void IrcBot::inviteUser(char* user, char* channel) {
   sendData(invite_msg);
 
   free(invite_msg);
+}
+
+/*
+ * Parses data into its components
+ *
+ * IRC messages take the form:
+ *   [prefix] command [params][ :trail]
+ *
+ * Where [*] indicates optional parts. In other words, only the
+ * command parameter is neccesary.
+ */
+void IrcBot::parseData() {
+  // Get prefix
+  if (recv_buffer[0] == ':') {
+    prefix = recv_buffer + 1;
+  } else {
+    prefix = NULL;
+  }
+
+  // Get trail
+  trail = strstr(recv_buffer, " :");
+  if (trail != NULL) {
+    *trail = '\0';
+    trail += 2;
+  }
+
+  // Get command
+  if (prefix != NULL) {
+    command = strstr(recv_buffer, " ");
+    *command = '\0';
+    command++;
+  } else {
+    command = recv_buffer;
+  }
+
+  // Get params
+  params = strstr(command, " ");
+  if (params != NULL) {
+    *params = '\0';
+    params++;
+  }
 }

@@ -99,41 +99,38 @@ called frequently.
 
 Example: `bot.recieveData();`
 
-searchData(search_string, case_sensitive)
------------------------------------------
-Searches the last recieved data for the given string. This search is performed on the raw server message 
-and will be case sensitive if the second parameter is true or case insensitive if the second parameter is 
-false. Returns true if the string is found.
-
-Example: `bot.searchData("Tell me a joke, bot.", false);`
-
 recievedMsg()
 -------------
 Checks if the last data recieved by recieveData() was a message. Returns true if it was. Since this method 
 only looks for the PRIVMSG command, it will return true for messages your bot sent. Therefore, you should 
-always check who the sender of the message is if you don't want your bot to respond to itself.
+always check who the sender of the message is if you don't want your bot to respond to itself. This 
+method should always be used before using getSender, getDest or getMsg to confirm that the last 
+message recieved was a message.
 
 Example `bot.recievedMsg();`
 
 getSender(buffer, size)
 -----------------------
-Confirms that the data last recieved was a message and prints the sender's name into the buffer. Size 
-should be the size of the buffer and is used to prevent overflows.
+Copies the sender's name into the buffer. Size 
+should be the size of the buffer and is used to prevent overflows. The recievedMsg method should be 
+used first to confirm that the last message recieved was a message.
 
 Example: `bot.getSender(username_buffer, 50);`
 
 getDest(buffer, size)
 ---------------------
-Confirms that the data last recieved was a message and prints the destination into the buffer. Size should 
+Copies the destination into the buffer. Size should 
 be the size of the buffer and is used to prevent overflows. This is a useful way to figure out which 
-channel a message came from or if the message was a direct message to the bot.
+channel a message came from or if the message was a direct message to the bot. The recievedMsg 
+method should be used first to confirm that the last message recieved was a message.
 
 Example: `bot.getDest(destination_buffer, 50);`
 
 getMsg(buffer, size)
 ------------------------
-Confirms that the data last recieved was a message and prints the sender's message into the buffer. Size 
-should be the size of the buffer and is used to prevent overflows.
+Copies the sender's message into the buffer. Size 
+should be the size of the buffer and is used to prevent overflows. The recievedMsg method should be 
+used first to confirm that the last message recieved was a message.
 
 Example: `bot.getMsg(message_buffer, 100);`
 
